@@ -1,3 +1,19 @@
+// Tuition values (2014-2015) from Wolfram Alpha
+var schools = [
+    { name: 'Brown', cost: 46408 },
+    { name: 'Columbia', cost: 48646 },
+    { name: 'Cornell', cost: 47050 },
+    { name: 'Dartmouth', cost: 46764 },
+    { name: 'Harvard', cost: 40418 },
+    { name: 'UPenn', cost: 42176 },
+    { name: 'Princeton', cost: 41820 },
+    { name: 'Yale', cost: 45800 }
+];
+
+var hardware = {
+    'moab': 170000
+};
+
 function walk(rootNode) {
     // Find all the text nodes in rootNode
     var walker = document.createTreeWalker(
@@ -14,45 +30,36 @@ function walk(rootNode) {
 }
 
 function handleText(textNode) {
-    textNode.nodeValue = replaceText(textNode.nodeValue, getRandomTuition());
+    textNode.nodeValue = replaceText(textNode.nodeValue);
 }
 
-function getRandomTuition() {
-    // Tuition values (2014-2015) from Wolfram Alpha
-    var schools = [
-        { name: 'Brown', tuition: 46408 },
-        { name: 'Columbia', tuition: 48646 },
-        { name: 'Cornell', tuition: 47050 },
-        { name: 'Dartmouth', tuition: 46764 },
-        { name: 'Harvard', tuition: 40418 },
-        { name: 'UPenn', tuition: 42176 },
-        { name: 'Princeton', tuition: 41820 },
-        { name: 'Yale', tuition: 45800 }
-    ];
-    return schools[Math.floor(Math.random() * schools.length)];
+function translate(h) {
+
+    // Lookup military hardware cost
+    var mhc = hardware[h];
+
+    // Select random school
+    var uni = schools[Math.floor(Math.random() * schools.length)];
+
+    // Calculate tuition equivalent
+    var years = Math.round(mhc * 100 / uni.cost) / 100;
+
+    // Return string
+    return years + " years of tuition at " + uni.name;
+
 }
 
-function replaceText(v, college) {
+function replaceText(v) {
 
     // TODO research most common military hardware usages in articles
 
     // TODO fix misspellings
 
-    // TODO calculate # of years of tuition at school
+    // Mother of all bombs
+    v = v.replace(/\bMother of All Bombs\b/g, translate("moab"));
+    // v = v.replace(/\b[Mm]other of all [Bb]ombs?\b/g, translate("moab"));
 
-
-
-    // Fix some misspellings
-    v = v.replace(/\b(M|m)illienial(s)?\b/g, "$1illennial$2");
-    v = v.replace(/\b(M|m)illenial(s)?\b/g, "$1illennial$2");
-    v = v.replace(/\b(M|m)ilennial(s)?\b/g, "$1illennial$2");
-    v = v.replace(/\b(M|m)ilenial(s)?\b/g, "$1illennial$2");
-    // Millennial Generation
-    v = v.replace(
-        /\b(?:Millennial Generation)|(?:Generation Millennial)\b/g,
-        "Plissken Faction"
-    );
-    v = v.replace(
+    /*v = v.replace(
         /\b(?:millennial generation)|(?:generation millennial)\b/g,
         "Plissken faction"
     );
@@ -74,7 +81,6 @@ function replaceText(v, college) {
     v = v.replace(/\bmillennial gal('s|s(?:')?)?\b/g, "snake gal$1");
     //  Aged Millennials
     v = v.replace(/\bMillennial Child('s)?\b/g, "Snakelet$1");
-    v = v.replace(/\b[Mm]illennial child('s)?\b/g, "snakelet$1");
     v = v.replace(/\bMillennial Children(?:(')s)?\b/g, "Snakelets$1");
     v = v.replace(/\b[Mm]illennial children(?:(')s)?\b/g, "snakelets$1");
     v = v.replace(
@@ -225,7 +231,7 @@ function replaceText(v, college) {
     v = v.replace(
         /\b(?:precarious generation)|(?:generation precarious)\b/g,
         "gargouille"
-    );
+    );*/
     return v;
 }
 // The callback used for the document body and title observers

@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 2,
   "name": "Military hardware expense to education cost",
   "short_name": "Military to Education Cost",
   "description": "Replaces text on webpages with tuition valuation equivalents.",
